@@ -1,14 +1,16 @@
 from flask import Flask, render_template, request
 import joblib
+from groq import Groq
 
 import os
 os.environ['GROQ_API_KEY'] = "gsk_j3Lh13KQksnY8M1WciM8W"
+# for cloud ..........
 
 app = Flask(__name__)
 
 @app.route("/",methods=["GET","POST"])
 def index():
-    return(render_template("index.sealion.html"))
+    return(render_template("index.html"))
 
 @app.route("/main",methods=["GET","POST"])
 def main():
@@ -22,9 +24,19 @@ def llama():
 
 @app.route("/llama_reply",methods=["GET","POST"])
 def llama_reply():
-    q = float(request.form.get("q"))
-    #load model
-    return(render_template("llama_reply.html",r=pred))
+    q = request.form.get("q")
+    # load model
+    client = Groq()
+    completion = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[
+            {
+                "role": "user",
+                "content": q
+            }
+        ]
+    )
+    return(render_template("llama_reply.html",r=completion.choices[0].message.content))
 
 @app.route("/dbs",methods=["GET","POST"])
 def dbs():
