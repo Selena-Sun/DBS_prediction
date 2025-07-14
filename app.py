@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import joblib
 
 import os
-os.environ['GROQ_API_KEY'] = userdata.get('groq')
+os.environ['GROQ_API_KEY'] = "gsk_j3Lh13KQksnY8M1WciM8W"
 
 app = Flask(__name__)
 
