@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 import joblib
 
+import os
+os.environ['GROQ_API_KEY'] = user.data.get('groq')
+
 app = Flask(__name__)
 
 @app.route("/",methods=["GET","POST"])
@@ -12,6 +15,16 @@ def main():
     q = request.form.get("q")
     # db
     return(render_template("main.html"))
+
+@app.route("/llama",methods=["GET","POST"])
+def llama():
+    return(render_template("llama.html"))
+
+@app.route("/llama_reply",methods=["GET","POST"])
+def llama_reply():
+    q = float(request.form.get("q"))
+    #load model
+    return(render_template("llama_reply.html",r=pred))
 
 @app.route("/dbs",methods=["GET","POST"])
 def dbs():
